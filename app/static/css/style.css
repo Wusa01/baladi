@@ -1,0 +1,155 @@
+:root {
+    --primary: #176b45;
+    --primary-dark: #104b32;
+    --background: #f7f9f7;
+    --text: #202b25;
+    --muted: #68756d;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: white;
+    color: var(--text);
+    line-height: 1.8;
+}
+
+.brand-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: var(--primary);
+    color: white;
+    border-radius: 10px;
+}
+
+.navbar-brand small {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.hero-section {
+    padding: 100px 0;
+    background: linear-gradient(135deg, #eef7f0, #ffffff);
+}
+
+.hero-label,
+.section-label {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+.hero-title {
+    font-size: clamp(2.2rem, 5vw, 3.7rem);
+    font-weight: 800;
+    line-height: 1.4;
+    margin: 20px 0;
+}
+
+.hero-title span {
+    color: var(--primary);
+    display: block;
+}
+
+.hero-description,
+.section-description {
+    color: var(--muted);
+    font-size: 1.1rem;
+    max-width: 650px;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.hero-note {
+    margin-top: 20px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.btn-success {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-success:hover {
+    background: var(--primary-dark);
+}
+
+.hero-illustration {
+    background: #dcefe2;
+    border-radius: 25px;
+    padding: 65px 20px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.city-icon {
+    font-size: 100px;
+}
+
+.section-padding {
+    padding: 80px 0;
+}
+
+.section-title {
+    font-weight: 800;
+    margin: 15px 0;
+}
+
+.feature-card {
+    height: 100%;
+    padding: 30px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.feature-icon {
+    font-size: 38px;
+    margin-bottom: 15px;
+}
+
+.feature-card h4 {
+    font-weight: bold;
+}
+
+.feature-card p,
+#how-it-works p {
+    color: var(--muted);
+}
+
+.step-number {
+    font-size: 42px;
+    color: var(--primary);
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.footer {
+    background: #17251d;
+    color: white;
+}
+
+.footer p {
+    color: #c5d2c9;
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 60px 0;
+    }
+
+    .section-padding {
+        padding: 55px 0;
+    }
+
+    .hero-illustration {
+        padding: 40px 15px;
+    }
+}
