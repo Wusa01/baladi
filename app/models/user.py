@@ -10,6 +10,14 @@ class User(UserMixin, db.Model):
 
     __tablename__ = "users"
 
+    ROLE_ADMIN = "admin"
+    ROLE_REVIEWER = "reviewer"
+
+    VALID_ROLES = {
+        ROLE_ADMIN,
+        ROLE_REVIEWER,
+    }
+
     id = db.Column(db.Integer, primary_key=True)
 
     username = db.Column(
@@ -34,7 +42,7 @@ class User(UserMixin, db.Model):
     role = db.Column(
         db.String(20),
         nullable=False,
-        default="reviewer"
+        default=ROLE_REVIEWER
     )
 
     is_active = db.Column(
@@ -62,7 +70,11 @@ class User(UserMixin, db.Model):
 
     @property
     def is_admin(self):
-        return self.role == "admin"
+        return self.role == self.ROLE_ADMIN
+
+    @property
+    def is_reviewer(self):
+        return self.role == self.ROLE_REVIEWER
 
     def __repr__(self):
         return f"<User {self.username}>"

@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}لوحة الإدارة | Baladi{% endblock %}
+
+{% block content %}
+
+<section class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>لوحة الإدارة</h2>
+            <p class="text-muted">
+                إدارة ومراجعة بلاغات منصة بلدي
+            </p>
+        </div>
+
+        <a href="{{ url_for('admin.reports') }}"
+           class="btn btn-success">
+            جميع البلاغات
+        </a>
+    </div>
+
+    <div class="row g-3 mb-5">
+
+        <div class="col-md-4 col-lg">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <p class="text-muted">إجمالي البلاغات</p>
+                    <h3>{{ total_reports }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-lg">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <p class="text-muted">بلاغات جديدة</p>
+                    <h3>{{ submitted_reports }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-lg">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <p class="text-muted">قيد المراجعة</p>
+                    <h3>{{ under_review_reports }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-lg">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <p class="text-muted">منشورة</p>
+                    <h3>{{ published_reports }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-lg">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <p class="text-muted">مرفوضة</p>
+                    <h3>{{ rejected_reports }}</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header bg-white py-3">
+            <h5 class="mb-0">أحدث البلاغات</h5>
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead class="table-light">
+                    <tr>
+                        <th>الرقم المرجعي</th>
+                        <th>العنوان</th>
+                        <th>التصنيف</th>
+                        <th>الحالة</th>
+                        <th>التاريخ</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for report in recent_reports %}
+
+                    <tr>
+                        <td>{{ report.reference_number }}</td>
+                        <td>{{ report.title }}</td>
+                        <td>{{ report.category.name_ar }}</td>
+                        <td><span class="badge {{ status_classes.get(report.status, 'bg-secondary') }}">
+                         {{ status_labels.get(report.status, report.status) }}
+                        </span></td>
+                        <td>
+                            {{ report.submitted_at.strftime("%Y-%m-%d") }}
+                        </td>
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+                        <td colspan="5" class="text-center py-4 text-muted">
+                            لا توجد بلاغات حتى الآن.
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -14,9 +14,10 @@ from app.extensions import (
 
 
 def create_app(config_class=Config):
+
     app = Flask(
         __name__,
-        instance_relative_config=True
+        instance_relative_config=True,
     )
 
     app.config.from_object(config_class)
@@ -34,9 +35,11 @@ def create_app(config_class=Config):
     # Configure login manager
     login_manager.login_view = "auth.login"
     login_manager.login_message = "يرجى تسجيل الدخول للمتابعة."
+    login_manager.login_message_category = "warning"
 
     @login_manager.user_loader
     def load_user(user_id):
+
         from app.models import User
 
         try:
@@ -44,11 +47,16 @@ def create_app(config_class=Config):
         except (ValueError, TypeError):
             return None
 
-    # Register database models
+    # Register models
     from app import models
 
     # Register blueprints
     from app.routes.main import main_bp
+    from app.routes.auth import auth_bp
+    from app.routes.admin import admin_bp
+
     app.register_blueprint(main_bp)
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(admin_bp)
 
     return app
