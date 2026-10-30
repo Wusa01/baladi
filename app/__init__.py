@@ -23,6 +23,7 @@ def create_app(config_class=Config):
 
     os.makedirs(app.instance_path, exist_ok=True)
 
+    # Initialize extensions
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
@@ -30,6 +31,23 @@ def create_app(config_class=Config):
     limiter.init_app(app)
     babel.init_app(app)
 
+    # Configure login manager
+    login_manager.login_view = "auth.login"
+    login_manager.login_message = "يرجى تسجيل الدخول للمتابعة."
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        from app.models import User
+
+        try:
+            return db.session.get(User, int(user_id))
+        except (ValueError, TypeError):
+            return None
+
+    # Register database models
+    from app import models
+
+    # Register blueprints
     from app.routes.main import main_bp
     app.register_blueprint(main_bp)
 
