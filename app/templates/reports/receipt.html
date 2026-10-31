@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}تم استلام البلاغ | بلدي{% endblock %}
+
+{% block content %}
+
+<section class="container py-5">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4 p-md-5 text-center">
+
+                    <div class="display-4 mb-3">✓</div>
+
+                    <h2 class="text-success">
+                        تم استلام بلاغك
+                    </h2>
+
+                    <p class="text-muted mt-3">
+                        استلمت منصة بلدي بلاغك بنجاح.
+                        سيخضع للمراجعة قبل نشره.
+                    </p>
+
+                    <hr class="my-4">
+
+                    <div class="mb-4">
+                        <label class="form-label text-muted">
+                            الرقم المرجعي
+                        </label>
+
+                        <div class="input-group">
+                            <input
+                                id="referenceNumber"
+                                type="text"
+                                class="form-control text-center fw-bold"
+                                value="{{ receipt.reference_number }}"
+                                readonly
+                            >
+
+                            <button
+                                class="btn btn-outline-secondary"
+                                type="button"
+                                onclick="copyValue('referenceNumber')"
+                            >
+                                نسخ
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label text-muted">
+                            رمز المتابعة السري
+                        </label>
+
+                        <div class="input-group">
+                            <input
+                                id="trackingToken"
+                                type="text"
+                                class="form-control text-center"
+                                value="{{ receipt.tracking_token }}"
+                                readonly
+                            >
+
+                            <button
+                                class="btn btn-outline-secondary"
+                                type="button"
+                                onclick="copyValue('trackingToken')"
+                            >
+                                نسخ
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning text-start">
+                        <strong>تنبيه مهم:</strong>
+                        احفظ الرقم المرجعي ورمز المتابعة في مكان آمن.
+                        لن نعرض رمز المتابعة مرة أخرى، ولا تشارك هذا الرمز مع أي شخص.
+                    </div>
+
+                    <a
+                        href="{{ url_for('main.index') }}"
+                        class="btn btn-success"
+                    >
+                        العودة إلى الصفحة الرئيسية
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+<script>
+function copyValue(elementId) {
+    const field = document.getElementById(elementId);
+
+    field.select();
+    field.setSelectionRange(0, 99999);
+
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(field.value);
+    } else {
+        document.execCommand("copy");
+    }
+}
+</script>
+
+{% endblock %}

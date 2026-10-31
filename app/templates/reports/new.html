@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}تقديم بلاغ جديد | بلدي{% endblock %}
+
+{% block content %}
+
+<section class="container py-5">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="mb-4">
+                <h2>تقديم بلاغ جديد</h2>
+                <p class="text-muted">
+                    ساعدنا في توثيق مشكلات الخدمات العامة في أنجمينا.
+                    لا تحتاج إلى إنشاء حساب.
+                </p>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+
+                    <form method="POST" novalidate>
+
+                        {{ form.hidden_tag() }}
+
+                        <div class="mb-3">
+                            {{ form.title.label(class="form-label") }}
+                            {{ form.title(class="form-control", placeholder="مثال: تراكم النفايات في الشارع") }}
+
+                            {% for error in form.title.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.description.label(class="form-label") }}
+                            {{ form.description(
+                                class="form-control",
+                                rows="5",
+                                placeholder="اشرح المشكلة ومكانها وتأثيرها..."
+                            ) }}
+
+                            {% for error in form.description.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+                                {{ form.category_id.label(class="form-label") }}
+                                {{ form.category_id(class="form-select") }}
+
+                                {% for error in form.category_id.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                {{ form.language.label(class="form-label") }}
+                                {{ form.language(class="form-select") }}
+                            </div>
+
+                            <div class="col-12">
+                                {{ form.neighborhood.label(class="form-label") }}
+                                {{ form.neighborhood(
+                                    class="form-control",
+                                    placeholder="اسم الحي"
+                                ) }}
+
+                                {% for error in form.neighborhood.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                        <hr class="my-4">
+
+                        <h5>بيانات التواصل</h5>
+                        <p class="text-muted small">
+                            هذه البيانات اختيارية وخاصة، ولا تظهر للعامة.
+                        </p>
+
+                        <div class="mb-3">
+                            {{ form.reporter_name.label(class="form-label") }}
+                            {{ form.reporter_name(class="form-control") }}
+
+                            {% for error in form.reporter_name.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+                                {{ form.reporter_phone.label(class="form-label") }}
+                                {{ form.reporter_phone(
+                                    class="form-control",
+                                    placeholder="+235..."
+                                ) }}
+
+                                {% for error in form.reporter_phone.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                {{ form.reporter_email.label(class="form-label") }}
+                                {{ form.reporter_email(
+                                    class="form-control",
+                                    input_type="email"
+                                ) }}
+
+                                {% for error in form.reporter_email.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                        <div class="alert alert-info mt-4">
+                            بعد إرسال البلاغ ستحصل على رقم مرجعي ورمز متابعة سري.
+                            احتفظ بهما لمتابعة بلاغك.
+                        </div>
+
+                        <div class="d-flex gap-2 flex-wrap">
+                            {{ form.submit(class="btn btn-success btn-lg") }}
+
+                            <a
+                                href="{{ url_for('main.index') }}"
+                                class="btn btn-outline-secondary btn-lg"
+                            >
+                                إلغاء
+                            </a>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}

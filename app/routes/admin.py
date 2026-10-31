@@ -1,6 +1,21 @@
-from flask import Blueprint, render_template, request
+from flask import (
+    Blueprint,
+    flash,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
+from flask_login import current_user
 
-from app.models import Report
+from app.extensions import db
+from app.models import Report, User
+from app.services.status_service import (
+    ALLOWED_TRANSITIONS,
+    REVIEWER_TRANSITIONS,
+    StatusTransitionError,
+    change_report_status,
+)
 from app.utils.permissions import reviewer_required
 
 
@@ -83,7 +98,6 @@ def dashboard():
 def reports():
 
     statuses = list(STATUS_LABELS.keys())
-
     status = request.args.get("status", "")
 
     query = Report.query
@@ -115,9 +129,58 @@ def report_detail(report_id):
 
     report = Report.query.get_or_404(report_id)
 
+    available_transitions = ALLOWED_TRANSITIONS.get(
+        report.status,
+        set(),
+    )
+
+    if current_user.role == User.ROLE_REVIEWER:
+        available_transitions = (
+            available_transitions
+            & REVIEWER_TRANSITIONS.get(report.status, set())
+        )
+
+    available_transitions = sorted(available_transitions)
+
     return render_template(
         "admin/report_detail.html",
         report=report,
         status_labels=STATUS_LABELS,
         status_classes=STATUS_CLASSES,
+        available_transitions=available_transitions,
+    )
+
+
+@admin_bp.route(
+    "/reports/<int:report_id>/status",
+    methods=["POST"],
+)
+@reviewer_required
+def update_report_status(report_id):
+
+    new_status = request.form.get("new_status", "").strip()
+    note = request.form.get("note", "").strip()
+
+    try:
+        change_report_status(
+            report_id=report_id,
+            new_status=new_status,
+            changed_by_id=current_user.id,
+            note=note or None,
+        )
+
+        flash("تم تحديث حالة البلاغ بنجاح.", "success")
+
+    except StatusTransitionError as error:
+        flash(str(error), "danger")
+
+    except Exception:
+        db.session.rollback()
+        flash("حدث خطأ أثناء تحديث البلاغ.", "danger")
+
+    return redirect(
+        url_for(
+            "admin.report_detail",
+            report_id=report_id,
+        )
     )
